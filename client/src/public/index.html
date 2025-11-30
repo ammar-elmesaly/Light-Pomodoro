@@ -20,17 +20,23 @@
 
         <div class="data-box">
             <h3>Sessions:</h3>
-            <div id="sessions">
-                <p id="session-info">Session 1: 25:00 Minutes</p>
+            <div id="session-history">
+                New sessions will be added here.
+                <!-- Previous sessions will be dynamically added here -->
             </div>
 
             <h3>Projects:</h3>
-            <div id="projects">
-                <p id="project-info">Project 1: Finish Homework</p>
+
+            <div class="project-controls">
+                <select id="project-select">  
+                </select>
+                <input type="text" id="new-project-name" placeholder="New project name" />
+                <button id="add-project-btn"><i class="bi bi-plus"></i></button>
             </div>
         </div>
     </div>
 
+    <script src="timer.js"></script>
     <script src="main.js"></script>
 </body>
 

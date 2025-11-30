@@ -46,6 +46,44 @@ body {
     cursor: pointer;
 }
 
+#pause-btn {
+    background-color: #636b75;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    transition: 0.2s ease-in-out;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Icon styling */
+#pause-btn i {
+    font-size: 20px;
+}
+
+/* Hover effect */
+#pause-btn:hover {
+    background-color: #50575f;
+}
+
+/* Click animation */
+button:active {
+    transform: scale(0.95);
+}
+
+.start-btn-running {
+    background: #f0192f !important;
+    color: #ffffff !important;
+}
+
+.pause-btn-running {  /* Show pause button when running */
+    display: inline-flex !important;
+}
+
 .data-box h3 {
     margin-bottom: 5px;
 }

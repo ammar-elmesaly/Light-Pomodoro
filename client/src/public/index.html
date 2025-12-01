@@ -12,6 +12,7 @@
 <body>
 
     <div class="container">
+        <div id="error-container"></div>
         <div class="timer-box">
             <div id="time-display">25:00</div>
             <button id="start-btn">Start</button>
@@ -21,7 +22,6 @@
         <div class="data-box">
             <h3>Sessions:</h3>
             <div id="session-history">
-                New sessions will be added here.
                 <!-- Previous sessions will be dynamically added here -->
             </div>
 
@@ -36,8 +36,8 @@
         </div>
     </div>
 
-    <script src="timer.js"></script>
-    <script src="main.js"></script>
+    <script type="module" src="timer.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 
 </html>

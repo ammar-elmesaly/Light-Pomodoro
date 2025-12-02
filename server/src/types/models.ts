@@ -5,3 +5,8 @@ export interface ProjectBody {
 export interface SessionBody {
     projectId: string
 }
+
+export interface EndSessionBody {
+    sessionId: string,
+    endTime: Date
+}

@@ -1,4 +1,4 @@
-import { getSessions, addSession, showError } from "./main.js";
+import { getSessions, addSession, endSession, showError } from "./main.js";
 
 const DEFAULT_TIME = 25 * 60;
 
@@ -35,7 +35,7 @@ async function shouldAutoplayTimer() {  // Autoplays timer if use has an active 
   return false
 }
 
-async function getOngoingSession() {  // This function will check if the user had an ongoing session
+async function getOngoingSession() {  // This function will get the ongoing session (if the user had)
   const sessions = await getSessions();
 
   let matching_session;
@@ -84,7 +84,7 @@ function startTimer() {
   return interval;
 }
 
-function stopTimer(intervalId) {
+async function stopTimer(intervalId) {
   clearInterval(intervalId);
 
   startBtn.textContent = 'Start';
@@ -98,6 +98,11 @@ function stopTimer(intervalId) {
   updatePausedIcon(PAUSED);
 
   displayTime(DEFAULT_TIME);
+
+  // end the session
+
+  const session = await getOngoingSession();
+  await endSession(session._id);
 }
 
 function pauseTimer(intervalId) {
@@ -138,6 +143,7 @@ function displayTime (remainingTime) {
 }
 
 export function formatTime(remainingTime) {
+  // remaining Time in seconds
   const minutes = Math.floor(remainingTime / 60)
   const seconds = remainingTime - minutes * 60;
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;

@@ -5,13 +5,16 @@ const addProjectBtn = document.querySelector('#add-project-btn');
 const projectTitleInput = document.querySelector('#new-project-title');
 const sessionHistoryElem = document.querySelector('#session-history');
 
+let SESSIONS = [];  // Global session array
+
 addProjectBtn.addEventListener('click', () => {
   const title = getProjectTitle();
   addProject(title);
 });
 
 projectSelectElem.addEventListener('change', () => {
-  alert(projectSelectElem.value);
+  localStorage.setItem('selectedProjectIndex', projectSelectElem.selectedIndex);
+  displaySessions(false);  // Don't fetch sessions from server
 })
 
 function getProjectTitle() {
@@ -66,13 +69,18 @@ async function displayProjects() {
 
     projectSelectElem.appendChild(optionElem);
   });
+  
+  projectSelectElem.selectedIndex = localStorage.getItem('selectedProjectIndex') || 0;
+}
 
-  projectSelectElem.lastElementChild.selected = true;
+function getSelectedProjectId() {
+  const index = projectSelectElem.selectedIndex;
+  const projectId = projectSelectElem.options[index].dataset.projectId;
+  return projectId;
 }
 
 export async function addSession() {
-  const index = projectSelectElem.selectedIndex;
-  const projectId = projectSelectElem.options[index].dataset.projectId;
+  const projectId = getSelectedProjectId();
 
   const res = await fetch('http://localhost:3000/api/sessions/start', {
     method: 'POST',
@@ -81,6 +89,27 @@ export async function addSession() {
     },
     body: JSON.stringify({
       projectId
+    })
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    showError('Error: ' + data.error); 
+    return;
+  }
+
+  displaySessions();
+}
+
+export async function endSession(sessionId) {
+  const res = await fetch('http://localhost:3000/api/sessions/end', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      sessionId,
+      endTime: Date.now()
     })
   });
 
@@ -106,21 +135,36 @@ export async function getSessions() {
   return sessions;
 }
 
-async function displaySessions() {
-  // Session 1: 25:00 Minutes
-  const sessions = await getSessions();
-  
-  if (sessions.length === 0) {
+export async function updateSessions() {
+  SESSIONS = await getSessions();  // sessions are saved in memory
+}
+
+async function displaySessions(update = true) {
+  // when displaying sessions, they are updated from the server unless specified
+  if (update)
+    await updateSessions();
+
+  sessionHistoryElem.innerHTML = '';
+
+  const filteredSessions = SESSIONS.filter(session => session.projectId === getSelectedProjectId());
+
+  if (filteredSessions.length === 0) {
     sessionHistoryElem.textContent = 'New sessions will be added here.';
     return;
   }
 
-  sessionHistoryElem.innerHTML = '';
-
-  sessions.forEach((session, index) => {
+  filteredSessions.forEach((session, index) => {
+    if (session.projectId !== getSelectedProjectId()) {
+      return;
+    }
     const sessionElem = document.createElement('div');
     sessionElem.id = 'session';
-    sessionElem.textContent = `Session ${index + 1}: ${session.duration ? formatTime(session.duration) : 'ongoing'}`;
+    
+    const duration = session.duration
+    ? formatTime(Math.floor(session.duration / 1000))
+    : null;
+
+    sessionElem.textContent = `Session ${index + 1}: ${duration ? duration + ' Minutes' : 'ongoing'}`;
     
     sessionHistoryElem.appendChild(sessionElem);
   });

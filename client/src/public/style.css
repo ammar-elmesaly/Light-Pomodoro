@@ -37,6 +37,33 @@ body {
     margin-bottom: 15px;
 }
 
+.time-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.disable-time-adjust {
+    display: none;
+}
+
+.time-adjust button {
+    border: none;
+    background: #aebff6;
+    padding: 4px 8px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+    margin-top: 10px;
+}
+
+.time-adjust button:hover {
+    background: #8ea7f8;
+}
+
+
 #start-btn {
     background: #7ea6ff;
     border: none;
@@ -130,6 +157,7 @@ select {
     background-position: right 10px center;
     background-size: 16px;
     padding-right: 32px;
+    width: 45%;
 }
 
 /* + button */

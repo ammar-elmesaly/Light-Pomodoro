@@ -1,10 +1,16 @@
 import express from 'express';
-import { endSession, getSessions, newSession } from '../handlers/sessions';
+import { endSession, getActiveSession, getPausedSession, getSessions, newSession, pauseSession, resumeSession } from '../handlers/sessions';
 
 const router = express.Router();
 
 // GET /api/sessions
 router.get('/', getSessions);
+
+// GET /api/sessions/active
+router.get('/active', getActiveSession);
+
+// GET /api/sessions/paused
+router.get('/paused', getPausedSession);
 
 // POST /api/sessions/start
 router.post('/start', newSession);
@@ -12,12 +18,10 @@ router.post('/start', newSession);
 // POST /api/sessions/end
 router.post('/end', endSession);
 
+// POST /api/sessions/pause
+router.post('/pause', pauseSession);
+
+// POST /api/sessions/resume
+router.post('/resume', resumeSession);
+
 export default router;
-
-/*
-TODO:
-
-POST /api/sessions/pause
-POST /api/sessions/resume
-
-*/

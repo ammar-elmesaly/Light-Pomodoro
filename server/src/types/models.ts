@@ -8,5 +8,6 @@ export interface SessionBody {
 
 export interface EndSessionBody {
     sessionId: string,
-    endTime: Date
 }
+
+export interface PauseSessionBody extends EndSessionBody {}

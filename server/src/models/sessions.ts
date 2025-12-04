@@ -30,7 +30,7 @@ const sessionSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['active', 'ended'],
+        enum: ['active', 'ended', 'paused'],
         default: 'active'
     }
 });

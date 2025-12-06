@@ -22,12 +22,15 @@ export async function initTimer() {
     const res = await startTimer(false);
     if (!handleResult(res)) return;
 
+    state.running = true;
     state.intervalId = res.interval;
+    setRunningUI();
 
   } else if (lastSessionState === 'paused') {
-    setRunningUI();
     state.running = true;
     state.paused = true;
+    
+    setRunningUI();
     updatePauseIcon(state.paused);
   }
 

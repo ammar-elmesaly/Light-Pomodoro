@@ -1,19 +1,21 @@
-import { getActiveSession, getPausedSession, addSession, endSession, pauseSession, resumeSession } from "../api/sessionsApi.js";
+import { getActiveSession,
+  getPausedSession,
+  addSession,
+  endSession,
+  pauseSession,
+  resumeSession,
+  getActiveOrPausedSession
+} from "../api/sessionsApi.js";
 import { state } from "../state/timerState.js";
 import { handleResult } from "../ui/errorHandlers.js";
 import { displayTime } from "../ui/timerUI.js";
 
 export async function getLastSessionState() {
-  const active = await getActiveSession();
-  const paused = await getPausedSession();
+  const res = await getActiveOrPausedSession();
+  if (!res.ok) return res;
 
-  const session = active.ok
-  ? active.session
-  : paused.ok
-    ? paused.session
-    : undefined;
-  
-  if (!session) return false;
+  const session = res.session;
+  if (!session) return false;  // no active or paused
 
   state.remainingTime = calculateRemaining(session, state.waitTime);
 
@@ -61,10 +63,10 @@ export async function stopTimer(intervalId) {
 
   // end the session
 
-  const activeRes = await getActiveSession();
-  if (!activeRes.ok) return activeRes;
+  const res = await getActiveOrPausedSession();
+  if (!res.ok) return res;
 
-  const session = activeRes.session;
+  const session = res.session;
 
   const endRes = await endSession(session._id);
 

@@ -1,5 +1,3 @@
-// @ts-check
-
 import { getSelectedProjectId } from "../logic/mainLogic.js";
 import { SESSIONS } from "../state/sessionState.js";
 
@@ -113,6 +111,18 @@ export async function getActiveSession() {
 
 export async function getPausedSession() {
   const res = await fetch('http://localhost:3000/api/sessions/paused');
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { ok: false, error: 'Error: ' + data.error};
+  }
+
+  const session = await res.json();
+  return { ok: true, session: session };
+}
+
+export async function getActiveOrPausedSession() {
+  const res = await fetch('http://localhost:3000/api/sessions/active_or_paused');
 
   if (!res.ok) {
     const data = await res.json();

@@ -1,5 +1,14 @@
 import express from 'express';
-import { endSession, getActiveSession, getPausedSession, getSessions, newSession, pauseSession, resumeSession } from '../handlers/sessions';
+import {
+    endSession,
+    getActiveSession,
+    getPausedSession,
+    getActiveOrPausedSession,
+    getSessions,
+    newSession,
+    pauseSession,
+    resumeSession
+} from '../handlers/sessions';
 
 const router = express.Router();
 
@@ -12,6 +21,8 @@ router.get('/active', getActiveSession);
 // GET /api/sessions/paused
 router.get('/paused', getPausedSession);
 
+// GET /api/sessions/active_or_paused
+router.get('/active_or_paused', getActiveOrPausedSession);
 // POST /api/sessions/start
 router.post('/start', newSession);
 

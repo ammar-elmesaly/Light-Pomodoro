@@ -27,6 +27,7 @@ async function clickStartBtn() {  // start button works both as a start and a st
     if (!handleResult(res)) return;
 
     setStoppedUI();
+    updatePauseIcon(state.paused);
     displayTime(state.remainingTime);
   }
 

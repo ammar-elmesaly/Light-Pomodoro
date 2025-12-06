@@ -107,3 +107,12 @@ export const getPausedSession: RequestHandler = async (req, res) => {
 
     res.json(session);
 }
+
+export const getActiveOrPausedSession: RequestHandler = async (req, res) => {
+    const session = await Session.findOne({status: { $ne: 'ended' }});
+    
+    if (!session)
+        throw new AppError('No active or paused session found.', 404);
+
+    res.json(session);
+}

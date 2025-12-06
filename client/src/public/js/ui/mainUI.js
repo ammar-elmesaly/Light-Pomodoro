@@ -5,7 +5,6 @@ import { formatTime } from "../utils.js";
 export function displayProjects(projects) {
   projectSelectElem.innerHTML = ''; // Clear all child project <option>
 
-  console.log(projects);
   projects.forEach((project, index) => {
     const optionElem = document.createElement('option');
     

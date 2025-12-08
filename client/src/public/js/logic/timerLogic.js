@@ -8,7 +8,11 @@ import { getActiveSession,
 } from "../api/sessionsApi.js";
 import { state } from "../state/timerState.js";
 import { handleResult } from "../ui/errorHandlers.js";
-import { displayTime } from "../ui/timerUI.js";
+
+export const timerEvents = {
+  onFinish: null,
+  onTick: null
+};
 
 export async function getLastSessionState() {
   const res = await getActiveOrPausedSession();
@@ -47,17 +51,13 @@ export async function startTimer(newSession = true) {
     if (!res.ok) return res;
   }
 
-  let interval = setInterval(async () => {
-    await decrementTimer();
-    displayTime(state.remainingTime);
-  }, 1000);
+  let interval = setInterval(decrementTimer, 1000);
   
   state.running = true;
   
   return { ok: true, interval };
 }
 
-// TODO: Fix backend, can't stop a paused session
 export async function stopTimer(intervalId) {
   clearInterval(intervalId);
 
@@ -79,14 +79,16 @@ export async function stopTimer(intervalId) {
   return { ok: true }
 }
 
-export async function decrementTimer() {  // decrements timer second by second
+export async function decrementTimer() {
   state.remainingTime--;
-  if (state.remainingTime < 0) { // Time goes negative then time is up
-    const res = await stopTimer(state.intervalId);
-    if (!handleResult(res)) return;
 
-    playAlertSound();
-    return;
+  if (timerEvents.onTick)
+    timerEvents.onTick(state.remainingTime);
+
+  if (state.remainingTime <= 0) {
+
+    if (timerEvents.onFinish)
+      timerEvents.onFinish();
   }
 }
 

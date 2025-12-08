@@ -4,10 +4,11 @@ import {
   pauseTimer,
   unpauseTimer,
   setWaitTime,
+  timerEvents
 } from '../logic/timerLogic.js';
 import { handleWaitTimeResult, handleResult } from '../ui/errorHandlers.js';
 import { startBtn, pauseBtn, incBtn, decBtn } from '../dom/timerDOM.js';
-import { setRunningUI, setStoppedUI, updatePauseIcon, displayTime } from '../ui/timerUI.js';
+import { setRunningUI, setStoppedUI, updatePauseIcon, displayTime, playAlertSound } from '../ui/timerUI.js';
 import { state } from '../state/timerState.js';
 import { updateSessions } from '../api/sessionsApi.js';
 import { displaySessions } from '../ui/mainUI.js';
@@ -75,7 +76,26 @@ function clickDecBtn() {
   displayTime(state.remainingTime);
 }
 
+
 function registerListeners() {
+  timerEvents.onFinish = async () => {
+    const res = await stopTimer(state.intervalId);
+    if (!handleResult(res)) return;
+
+    setStoppedUI();
+    updatePauseIcon(state.paused);
+    displayTime(state.remainingTime);
+    playAlertSound();
+
+    const updateSessionsRes = await updateSessions();
+    if (!handleResult(updateSessionsRes)) return;
+    displaySessions(SESSIONS.getSessions());
+  };
+
+  timerEvents.onTick = (remainingSeconds) => {
+    displayTime(remainingSeconds);
+  };
+  
   startBtn.addEventListener('click', clickStartBtn);
   pauseBtn.addEventListener('click', clickPauseBtn);
   incBtn.addEventListener('click', clickIncBtn);

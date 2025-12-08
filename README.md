@@ -3,12 +3,67 @@
 Light Pomodoro is a lightweight full-stack Pomodoro timer application built with vanilla JavaScript on the frontend and Node.js + TypeScript on the backend.
 It focuses on clarity and simplicity, keeping most of the dynamic logic on the client side while the backend provides persistence and session bookkeeping.
 
+![Light Pomodoro Screenshot](banner.png)
+
 ## Overview
 
 Users can start Pomodoro sessions, pause them, resume them, and stop them.
 The client is responsible for running the actual timer, while the backend stores session metadata and pause history in MongoDB.
 
 This design keeps the project “light” and avoids unnecessary overhead or real-time infrastructure.
+
+## Running Light Pomodoro Locally
+
+Follow these steps to run the project on your machine (frontend + backend):
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/ammar-elmesaly/Light-Pomodoro.git
+cd Light-Pomodoro
+```
+
+### 2. Install Backend Dependencies
+
+The backend is in Node.js + TypeScript.
+
+```bash
+cd server
+npm install
+```
+
+### 3. Environment Variables
+
+Create a .env file inside the backend directory and add:
+
+`MONGO_URI=your_mongodb_connection_string`
+
+### 4. Start the Backend Server
+
+```bash
+npm run start:dev
+```
+
+This runs on `http://localhost:3000` (by default).
+
+### 5. Install Frontend Dependencies
+
+```bash
+cd ../client
+npm install
+```
+
+### 6. Start the Frontend
+
+```bash
+npm run start:dev
+```
+
+This runs on `http://localhost:5173` (by default).
+
+### 7. Open the App
+
+Visit: `http://localhost:5173`
 
 ## How It Works
 

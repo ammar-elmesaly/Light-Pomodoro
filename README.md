@@ -32,11 +32,9 @@ The backend:
 
 If the user refreshes the page:
 
-The frontend asks the backend for any active or paused session.
-
-If one exists, the client calculates the remaining time using timestamps stored in the database.
-
-The client recreates its local countdown using setInterval.
+* The frontend asks the backend for any active or paused session.
+* If one exists, the client calculates the remaining time using timestamps stored in the database.
+* The client recreates its local countdown using setInterval.
 
 ### 3. Pausing & Resuming
 
@@ -53,7 +51,7 @@ When the user stops the session:
 
 * The frontend sends a POST /session/stop.
 * The backend computes:
-* `duration = endTime - startTime - totalPauseDuration`
+`duration = endTime - startTime - totalPauseDuration`
 
 It then stores the final completed session in MongoDB.
 

@@ -19,23 +19,39 @@ export const newSession: NewSessionHandler = async (req, res) => {
 }
 
 export const endSession: EndSessionHandler = async (req, res) => {
-    const session = await Session.findOneAndUpdate(
-        {_id: req.body.sessionId, status: {$ne: 'ended'}},
-        [{
-            $set: {
-                endTime: new Date(),
-                status: 'ended',
-                duration: { $subtract: ['$$NOW', '$startTime'] }
-            }
-        }],
-        { new: true, updatePipeline: true }
+    const session = await Session.findOne(
+        { _id: req.body.sessionId, status: { $ne: 'ended' } },
     );
 
     if (!session)
         throw new AppError('Session is not found or ended', 400);
 
+    let totalPause = 0;
+
+    for (const pause of session.pauses) {
+        if (!pause.start) continue;
+
+        const start = pause.start;
+        const end = pause.end ?? new Date();
+        totalPause += new Date(end).getTime() - new Date(start).getTime();
+    }
+    
+    const startTime = session.startTime;
+    const endTime = new Date();
+
+    const duration = new Date(endTime).getTime() - new Date(startTime).getTime() - totalPause;
+
+    const updatedSession = await Session.findByIdAndUpdate(session._id, 
+        {
+            endTime,
+            duration,
+            status: 'ended'
+        },
+        { new: true }
+    );
+
     res.json({
-        session
+        updatedSession
     });
 }
 

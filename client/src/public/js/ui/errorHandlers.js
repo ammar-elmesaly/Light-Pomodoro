@@ -19,5 +19,6 @@ export function handleResult(res) {
     return false;
   }
 
+
   return true;
 }

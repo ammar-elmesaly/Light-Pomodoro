@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { Project } from '../models/project';
-import { AddProjectHandler } from '../types/handlers';
+import { Session } from '../models/sessions';
+import { AddProjectHandler, DeleteProjectHandler } from '../types/handlers';
 import { AppError } from '../types/errors';
 
 export const getProjects: RequestHandler = async (req, res) => {
@@ -16,4 +17,17 @@ export const addProject: AddProjectHandler = async (req, res) => {
 
     const project = await Project.create({ title: req.body.title });
     res.status(201).json(project);
+}
+
+export const deleteProject: DeleteProjectHandler = async (req, res) => {
+    // check if there is an active session in this project first
+    const active = await Session.exists({
+        status: { $ne: 'ended' },
+        projectId: { $eq: req.body.projectId }
+    });
+    if (active)
+        throw new AppError('Cannot delete a project containing an active session.', 400);
+
+    const project = await Project.findByIdAndDelete(req.body.projectId);
+    res.json(project);
 }

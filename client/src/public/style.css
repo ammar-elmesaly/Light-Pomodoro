@@ -10,7 +10,7 @@ body {
 
 .container {
     background: white;
-    width: 500px;
+    width: 600px;
     border-radius: 20px;
     padding: 20px 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,7 @@ button:active {
     opacity: 0.7;
 }
 
-#session {
+#session, #history-info {
     margin-bottom: 8px;
 }
 /* Shared input/select styles */
@@ -160,12 +160,27 @@ select {
     width: 45%;
 }
 
+#delete-history-btn {
+    background-color: #78808a;
+    color: white;
+    margin-left: 0px !important;
+}
+
 /* + button */
 #add-project-btn {
-    padding: 8px 12px;
-    margin-left: 6px;
     background: #7a8cff;
     color: white;
+}
+
+/* x button */
+#delete-project-btn {
+    background: #f33c3c;
+    color: white;
+}
+
+#add-project-btn, #delete-project-btn, #delete-history-btn {
+    padding: 8px 12px;
+    margin-left: 6px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -177,8 +192,24 @@ select {
     background: #6c7aff;
 }
 
-#add-project-btn:active {
+#delete-project-btn:hover {
+    background: #d42323;
+}
+
+#delete-history-btn:hover {
+    background-color: #636b75;
+}
+
+#add-project-btn:active, #delete-project-btn:active, #delete-history-btn:activer {
     transform: scale(0.94);
+}
+
+.disable-delete-history-btn {
+    display: none;
+}
+
+.disable-delete-project-btn {
+    display: none;
 }
 
 .error-message {

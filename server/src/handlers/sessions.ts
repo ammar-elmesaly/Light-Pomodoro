@@ -1,4 +1,4 @@
-import { EndSessionHandler, NewSessionHandler, PauseSessionHandler } from "../types/handlers"
+import { DeleteHistoryHandler, DeleteProjectHandler, EndSessionHandler, NewSessionHandler, PauseSessionHandler } from "../types/handlers"
 import { Session } from "../models/sessions";
 import { RequestHandler } from "express";
 import { AppError } from "../types/errors";
@@ -129,6 +129,21 @@ export const getActiveOrPausedSession: RequestHandler = async (req, res) => {
     
     if (!session)
         throw new AppError('No active or paused session found.', 404);
+
+    res.json(session);
+}
+
+export const deleteSessionHistory: DeleteHistoryHandler = async (req, res) => {
+    const session = await Session.deleteMany({
+        projectId: req.body.projectId,
+        status: { $eq: 'ended' }
+    });
+
+    if (session.deletedCount === 0) {
+        res.status(204).json(session);  // 204: No content
+        return;
+    }
+
 
     res.json(session);
 }

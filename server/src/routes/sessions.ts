@@ -7,7 +7,8 @@ import {
     getSessions,
     newSession,
     pauseSession,
-    resumeSession
+    resumeSession,
+    deleteSessionHistory
 } from '../handlers/sessions';
 
 const router = express.Router();
@@ -34,5 +35,8 @@ router.post('/pause', pauseSession);
 
 // POST /api/sessions/resume
 router.post('/resume', resumeSession);
+
+// DELETE /api/sessions/delete/history
+router.delete('/delete/history', deleteSessionHistory);
 
 export default router;

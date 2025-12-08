@@ -2,7 +2,10 @@ import { getSelectedProjectId } from "../logic/mainLogic.js";
 import { SESSIONS } from "../state/sessionState.js";
 
 export async function addSession() {
-  const projectId = getSelectedProjectId();
+  const projectIdRes = getSelectedProjectId();
+  if (!projectIdRes.ok) return projectIdRes;
+
+  const projectId = projectIdRes.projectId;
 
   const res = await fetch('http://localhost:3000/api/sessions/start', {
     method: 'POST',
@@ -134,11 +137,29 @@ export async function getActiveOrPausedSession() {
 }
 
 export async function updateSessions() {
-  let res = await getSessions();
+  const res = await getSessions();
   if (!res.ok) return res;
 
   const sessions = await res.sessions;
   
   SESSIONS.setSessions(sessions);  // sessions are saved in memory
   return { ok: true }
+}
+
+export async function deleteSessionHistory(projectId) {
+  const res = await fetch('http://localhost:3000/api/sessions/delete/history', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      projectId
+    })
+  });
+
+  if (!res.ok) return { ok: false };
+
+  if (res.status === 204) return { ok: false, error: 'No sessions to delete' };
+  
+  return { ok: true, status: res.status };
 }

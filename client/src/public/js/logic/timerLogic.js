@@ -108,9 +108,10 @@ export async function pauseTimer(intervalId) {
 }
 
 export async function unpauseTimer() {
-  const res = await startTimer(false);  // Don't start a new session
-
-  state.intervalId = res.interval;
+  const startTimerRes = await startTimer(false);  // Don't start a new session
+  if (!startTimerRes.ok) return startTimerRes;
+  
+  state.intervalId = startTimerRes.interval;
   state.paused = false;
 
   const pausedRes = await getPausedSession();

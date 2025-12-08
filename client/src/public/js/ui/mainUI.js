@@ -1,9 +1,15 @@
 import {  getSelectedProjectId } from "../logic/mainLogic.js";
-import { projectSelectElem, sessionHistoryElem } from "../dom/mainDOM.js";
+import { projectSelectElem, sessionHistoryElem, deleteProjectBtn } from "../dom/mainDOM.js";
 import { formatTime } from "../utils.js";
 
 export function displayProjects(projects) {
   projectSelectElem.innerHTML = ''; // Clear all child project <option>
+
+  if (projects.length === 0)
+    deleteProjectBtn.classList.add('disable-delete-project-btn');
+
+  else
+    deleteProjectBtn.classList.remove('disable-delete-project-btn');
 
   projects.forEach((project, index) => {
     const optionElem = document.createElement('option');
@@ -21,16 +27,20 @@ export function displayProjects(projects) {
 
 export function displaySessions(sessions) {
   sessionHistoryElem.innerHTML = '';
-  
-  const filteredSessions = sessions.filter(session => session.projectId === getSelectedProjectId());
+  const projectIdRes = getSelectedProjectId();
+  if (!projectIdRes.ok) return projectIdRes;
+
+  const projectId = projectIdRes.projectId;
+
+  const filteredSessions = sessions.filter(session => session.projectId === projectId);
 
   if (filteredSessions.length === 0) {
-    sessionHistoryElem.textContent = 'New sessions will be added here.';
-    return;
+    sessionHistoryElem.innerHTML = '<div id="history-info">New sessions will be added here.</div>';
+    return { ok: true };
   }
 
   filteredSessions.forEach((session, index) => {
-    if (session.projectId !== getSelectedProjectId()) {
+    if (session.projectId !== projectId) {
       return;
     }
     const sessionElem = document.createElement('div');
@@ -60,6 +70,8 @@ export function displaySessions(sessions) {
     
     sessionHistoryElem.appendChild(sessionElem);
   });
+
+  return { ok: true };
 }
 
 let errorTimeoutId;

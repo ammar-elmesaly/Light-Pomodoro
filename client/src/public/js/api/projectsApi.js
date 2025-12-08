@@ -29,3 +29,24 @@ export async function getProjects() {
   const projects = await res.json();
   return { ok: true, projects }; 
 }
+
+export async function deleteProject(projectId) {
+  const res = await fetch('http://localhost:3000/api/projects/delete', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      projectId
+    })
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { ok: false, error: 'Error: ' + data.error};
+  }
+
+  const project = await res.json();
+  
+  return { ok: true, project };
+}

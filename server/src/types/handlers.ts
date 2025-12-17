@@ -1,14 +1,27 @@
 import { RequestHandler } from 'express';
-import { EndSessionBody, ProjectBody, SessionBody, PauseSessionBody } from './models';
+import {
+    CreateProjectInput,
+    StartSessionInput,
+    EndSessionInput,
+    PauseSessionInput,
+    DeleteProjectInput,
+    DeleteHistoryInput
+} from './dtos';
 
-export type AddProjectHandler = RequestHandler<any, any, ProjectBody>;
+export type AddProjectHandler =
+    RequestHandler<any, any, CreateProjectInput>;
 
-export type NewSessionHandler = RequestHandler<any, any, SessionBody>;
+export type NewSessionHandler =
+    RequestHandler<any, any, StartSessionInput>;
 
-export type DeleteHistoryHandler = RequestHandler<any, any, SessionBody>;
+export type EndSessionHandler =
+    RequestHandler<any, any, EndSessionInput>;
 
-export type DeleteProjectHandler = RequestHandler<any, any, SessionBody>;
+export type PauseSessionHandler =
+    RequestHandler<any, any, PauseSessionInput>;
 
-export type PauseSessionHandler = RequestHandler<any, any, PauseSessionBody>;
+export type DeleteProjectHandler =
+    RequestHandler<any, any, DeleteProjectInput>;
 
-export type EndSessionHandler = RequestHandler<any, any, EndSessionBody>;
+export type DeleteHistoryHandler =
+    RequestHandler<any, any, DeleteHistoryInput>;

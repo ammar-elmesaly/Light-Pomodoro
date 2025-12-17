@@ -24,8 +24,13 @@ const sessionSchema = new mongoose.Schema({
         }
     ],
 
+    plannedDuration: {
+        type: Number,  // in ms
+        required: true
+    },
+    
     duration: {
-        type: Number,
+        type: Number,  // in ms
     },
 
     status: {

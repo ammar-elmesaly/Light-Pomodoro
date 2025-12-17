@@ -1,4 +1,4 @@
-import { DeleteHistoryHandler, DeleteProjectHandler, EndSessionHandler, NewSessionHandler, PauseSessionHandler } from "../types/handlers"
+import { DeleteHistoryHandler, EndSessionHandler, NewSessionHandler, PauseSessionHandler } from "../types/handlers"
 import { Session } from "../models/sessions";
 import { RequestHandler } from "express";
 import { AppError } from "../types/errors";
@@ -11,8 +11,16 @@ export const newSession: NewSessionHandler = async (req, res) => {
     if (active)
         throw new AppError('Cannot start two active sessions at the same time', 400);
 
+    const FIVE_MINUTES = 5 * 60 * 1000;  // 5 mins in ms
+    const SIXTY_MINUTES = 60 * 60 * 1000;  // 60 min in ms
+    const plannedDuration = req.body.plannedDuration;
+
+    if (plannedDuration < FIVE_MINUTES || plannedDuration > SIXTY_MINUTES)
+        throw new AppError('Wait time must be 5-60 minutes.', 400);
+
     const newSession = await Session.create({
-        projectId: req.body.projectId
+        projectId: req.body.projectId,
+        plannedDuration
     });
 
     res.status(201).json(newSession);
@@ -39,7 +47,9 @@ export const endSession: EndSessionHandler = async (req, res) => {
     const startTime = session.startTime;
     const endTime = new Date();
 
-    const duration = new Date(endTime).getTime() - new Date(startTime).getTime() - totalPause;
+    let duration = new Date(endTime).getTime() - new Date(startTime).getTime() - totalPause;
+
+    duration = Math.min(duration, session.plannedDuration);
 
     const updatedSession = await Session.findByIdAndUpdate(session._id, 
         {

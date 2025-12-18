@@ -12,6 +12,12 @@ The client is responsible for running the actual timer, while the backend stores
 
 This design keeps the project “light” and avoids unnecessary overhead or real-time infrastructure.
 
+## API Documentation
+
+The REST API reference is available here:
+
+[Light Pomodoro API Reference](server/docs/API.md)
+
 ## Running Light Pomodoro Locally
 
 Follow these steps to run the project on your machine (frontend + backend):

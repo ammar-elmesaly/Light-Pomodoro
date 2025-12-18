@@ -1,7 +1,7 @@
 import { getSelectedProjectId } from "../logic/mainLogic.js";
 import { SESSIONS } from "../state/sessionState.js";
 
-export async function addSession() {
+export async function addSession(plannedDuration) {
   const projectIdRes = getSelectedProjectId();
   if (!projectIdRes.ok) return projectIdRes;
 
@@ -13,9 +13,11 @@ export async function addSession() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      projectId
+      projectId,
+      plannedDuration
     })
   });
+  
 
   if (!res.ok) {
     const data = await res.json();
@@ -96,7 +98,7 @@ export async function getSessions() {
   }
 
   const sessions = await res.json();
-  return { ok: true, sessions };
+  return { ok: true, sessions: sessions.sessions };
 }
 
 export async function getActiveSession() {

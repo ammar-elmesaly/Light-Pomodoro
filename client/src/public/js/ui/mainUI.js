@@ -11,6 +11,7 @@ export function displayProjects(projects) {
   else
     deleteProjectBtn.classList.remove('disable-delete-project-btn');
 
+  console.log(projects)
   projects.forEach((project, index) => {
     const optionElem = document.createElement('option');
     
@@ -50,7 +51,7 @@ export function displaySessions(sessions) {
 
     switch (session.status) {
       case 'ended':
-        statusText = `Completed: ${formatTime(Math.floor(session.duration / 1000))} Minutes`;
+        statusText = `Completed: ${formatTime(Math.floor(session.duration))} Minutes`;
         break;
       
       case 'active':

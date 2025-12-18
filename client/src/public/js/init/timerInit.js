@@ -2,15 +2,15 @@ import { setWaitTime, getLastSessionState, startTimer } from "../logic/timerLogi
 import { state } from "../state/timerState.js";
 import { displayTime, setRunningUI, updatePauseIcon } from "../ui/timerUI.js";
 import registerTimeListeners from "../listeners/timerListeners.js";
-import { DEFAULT_TIME } from "../state/timerState.js";
+import { DEFAULT_SESSION_DURATION } from "../constants/session.js";
 import { handleResult } from "../ui/errorHandlers.js";
 
 export async function initTimer() {
   const res = setWaitTime(localStorage.getItem('waitTime'));
 
-  if (!res.ok) {  // If someone plays with localStorage manually, default to DEFAULT_TIME
-    state.waitTime = DEFAULT_TIME;
-    localStorage.setItem('waitTime', DEFAULT_TIME);
+  if (!res.ok) {  // If someone plays with localStorage manually, default to DEFAULT_SESSION_DURATION
+    state.waitTime = DEFAULT_SESSION_DURATION;
+    localStorage.setItem('waitTime', DEFAULT_SESSION_DURATION);
   }
 
   state.remainingTime = state.waitTime;
@@ -19,7 +19,7 @@ export async function initTimer() {
   // race conditions are evaded - Insha'Allah :)
 
   if (lastSessionState === 'active') {
-    const res = await startTimer(false);
+    const res = await startTimer(false);  // no new session
     if (!handleResult(res)) return;
 
     state.running = true;

@@ -7,7 +7,10 @@ import { getActiveSession,
   getActiveOrPausedSession
 } from "../api/sessionsApi.js";
 import { state } from "../state/timerState.js";
-import { handleResult } from "../ui/errorHandlers.js";
+import {
+  MAX_SESSION_DURATION,
+  MIN_SESSION_DURATION
+} from "../constants/session.js";
 
 export const timerEvents = {
   onFinish: null,
@@ -38,16 +41,16 @@ export function calculateRemaining(session, waitTime) {
   const start = new Date(session.startTime).getTime();
 
   if (lastPauseStart !== null) {  // The session was paused
-    return Math.floor(waitTime - ((lastPauseStart - start - totalPause) / 1000));
+    return Math.floor(waitTime - (lastPauseStart - start - totalPause));
   }
 
   // the session was active
-  return Math.floor(waitTime - ((Date.now() - start - totalPause) / 1000));
+  return Math.floor(waitTime - (Date.now() - start - totalPause));
 }
 
 export async function startTimer(newSession = true) {
   if (newSession) {  // start timer and generate a new session
-    const res = await addSession();
+    const res = await addSession(state.waitTime);
     if (!res.ok) return res;
   }
 
@@ -80,7 +83,7 @@ export async function stopTimer(intervalId) {
 }
 
 export async function decrementTimer() {
-  state.remainingTime--;
+  state.remainingTime -= 1000;  // 1 second
 
   if (timerEvents.onTick)
     timerEvents.onTick(state.remainingTime);
@@ -134,7 +137,7 @@ export function setWaitTime(newWaitTime) {
   if (!Number.isInteger(newWaitTime))
     return { ok: false, error: "NOT_INT" };
 
-  if (newWaitTime > 60 * 60 || newWaitTime < 5 * 60)
+  if (newWaitTime > MAX_SESSION_DURATION || newWaitTime < MIN_SESSION_DURATION)
     return { ok: false, error: "OUT_OF_RANGE" };
 
   state.waitTime = newWaitTime;

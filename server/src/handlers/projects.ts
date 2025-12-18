@@ -6,7 +6,10 @@ import { AppError } from '../types/errors';
 
 export const getProjects: RequestHandler = async (req, res) => {
     const projects = await Project.find();
-    res.json(projects);
+    res.json({
+        success: true,
+        projects
+    });
 }
 
 export const addProject: AddProjectHandler = async (req, res) => {
@@ -16,7 +19,10 @@ export const addProject: AddProjectHandler = async (req, res) => {
         throw new AppError('Project already exists', 400);
 
     const project = await Project.create({ title: req.body.title });
-    res.status(201).json(project);
+    res.status(201).json({
+        success: true,
+        ...project.toObject()
+    });
 }
 
 export const deleteProject: DeleteProjectHandler = async (req, res) => {
@@ -29,5 +35,12 @@ export const deleteProject: DeleteProjectHandler = async (req, res) => {
         throw new AppError('Cannot delete a project containing an active session.', 400);
 
     const project = await Project.findByIdAndDelete(req.body.projectId);
-    res.json(project);
+    
+    if (!project)
+        throw new AppError('Project not found.', 404);
+
+    res.json({
+        success: true,
+        ...project.toObject()
+    });
 }

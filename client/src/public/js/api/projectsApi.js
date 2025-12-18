@@ -1,5 +1,5 @@
 export async function addProject(projectTitle) {
-  const res = await fetch('http://localhost:3000/api/projects', {
+  const res = await fetch('http://localhost:3000/api/projects/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export async function getProjects() {
   }
 
   const projects = await res.json();
-  return { ok: true, projects }; 
+  return { ok: true, projects: projects.projects }; 
 }
 
 export async function deleteProject(projectId) {

@@ -6,8 +6,8 @@ const router = express.Router();
 // GET /api/projects
 router.get('/', getProjects);
 
-// POST /api/projects
-router.post('/', addProject);
+// POST /api/projects/add
+router.post('/add', addProject);
 
 // DELETE /api/projects/delete/
 router.delete('/delete', deleteProject);

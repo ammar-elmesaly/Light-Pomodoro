@@ -34,7 +34,7 @@ npm install
 
 ### 3. Environment Variables
 
-Create a .env file inside the backend directory and add:
+Create a .env file inside the server directory and add:
 
 `MONGO_URI=your_mongodb_connection_string`
 

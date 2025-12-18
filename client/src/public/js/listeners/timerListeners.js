@@ -13,6 +13,7 @@ import { state } from '../state/timerState.js';
 import { updateSessions } from '../api/sessionsApi.js';
 import { displaySessions } from '../ui/mainUI.js';
 import { SESSIONS } from '../state/sessionState.js';
+import { FIVE_MINS } from '../constants/time.js';
 
 async function clickStartBtn() {  // start button works both as a start and a stop button
   if (!state.running) {
@@ -61,7 +62,7 @@ async function clickPauseBtn() {
 }
 
 function clickIncBtn() {
-  const res = setWaitTime(state.waitTime + 5 * 60);
+  const res = setWaitTime(state.waitTime + FIVE_MINS);
   if (!handleWaitTimeResult(res)) return;
 
   state.remainingTime = state.waitTime;
@@ -69,7 +70,7 @@ function clickIncBtn() {
 }
 
 function clickDecBtn() {
-  const res = setWaitTime(state.waitTime - 5 * 60);
+  const res = setWaitTime(state.waitTime - FIVE_MINS);
   if (!handleWaitTimeResult(res)) return;
 
   state.remainingTime = state.waitTime;

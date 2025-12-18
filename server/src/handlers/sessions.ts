@@ -23,7 +23,10 @@ export const newSession: NewSessionHandler = async (req, res) => {
         plannedDuration
     });
 
-    res.status(201).json(newSession);
+    res.status(201).json({
+        success: true,
+        ...newSession.toObject()
+    });
 }
 
 export const endSession: EndSessionHandler = async (req, res) => {
@@ -61,7 +64,8 @@ export const endSession: EndSessionHandler = async (req, res) => {
     );
 
     res.json({
-        updatedSession
+        success: true,
+        ...updatedSession!.toObject()  // updatedSession cannot be null
     });
 }
 
@@ -83,7 +87,8 @@ export const pauseSession: PauseSessionHandler = async (req, res) => {
         throw new AppError('Session not found or not active', 400);
 
     res.json({
-        session
+        success: true,
+        ...session.toObject()
     });
 };
 
@@ -107,13 +112,17 @@ export const resumeSession: PauseSessionHandler = async (req, res) => {
         throw new AppError('Session not found or not paused', 400);
 
     res.json({
-        session
+        success: true,
+        ...session.toObject()
     });
 }
 
 export const getSessions: RequestHandler = async (req, res) => {
     const sessions = await Session.find();
-    res.json(sessions);
+    res.json({
+        success: true,
+        sessions
+    });
 }
 
 export const getActiveSession: RequestHandler = async (req, res) => {
@@ -122,7 +131,10 @@ export const getActiveSession: RequestHandler = async (req, res) => {
     if (!session)
         throw new AppError('No active session found.', 404);
 
-    res.json(session);
+    res.json({
+        success: true,
+        ...session.toObject()
+    });
 }
 
 export const getPausedSession: RequestHandler = async (req, res) => {
@@ -131,7 +143,10 @@ export const getPausedSession: RequestHandler = async (req, res) => {
     if (!session)
         throw new AppError('No paused session found.', 404);
 
-    res.json(session);
+    res.json({
+        success: true,
+        ...session.toObject()
+    });
 }
 
 export const getActiveOrPausedSession: RequestHandler = async (req, res) => {
@@ -140,7 +155,10 @@ export const getActiveOrPausedSession: RequestHandler = async (req, res) => {
     if (!session)
         throw new AppError('No active or paused session found.', 404);
 
-    res.json(session);
+    res.json({
+        success: true,
+        ...session.toObject()
+    });
 }
 
 export const deleteSessionHistory: DeleteHistoryHandler = async (req, res) => {
@@ -150,10 +168,16 @@ export const deleteSessionHistory: DeleteHistoryHandler = async (req, res) => {
     });
 
     if (session.deletedCount === 0) {
-        res.status(204).json(session);  // 204: No content
+        res.status(204).json({
+            session: true,
+            ...session
+        });  // 204: No content
         return;
     }
 
 
-    res.json(session);
+    res.json({
+        success: true,
+        ...session
+    });
 }

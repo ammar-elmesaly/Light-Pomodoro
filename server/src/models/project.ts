@@ -10,6 +10,8 @@ const projectSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     }
-});
+},
+{ versionKey: false }
+);
 
 export const Project = mongoose.model('Project', projectSchema);

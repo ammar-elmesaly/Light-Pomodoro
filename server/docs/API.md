@@ -14,11 +14,11 @@ All endpoints expect and return JSON.
 
 ### Retrieve Sessions
 
-#### 1. Get Paused Session
+#### Get Paused Session
 
 **GET** `/sessions/paused`
 
-Retrieve the current paused session.
+Returns the current paused session, or an error if none exists.
 
 **Response:**
 
@@ -30,14 +30,11 @@ Retrieve the current paused session.
   "plannedDuration": 1500000,
   "status": "paused",
   "startTime": "2025-12-17T21:30:23.163Z",
-  "pauses": [
-    {
+  "pauses": [{
       "start": "2025-12-17T21:43:30.746Z",
       "end": "2025-12-17T21:44:24.348Z",
       "_id": "string"
-    },
-  ],
-  "__v": 0
+  }]
 }
 ```
 
@@ -52,11 +49,11 @@ Retrieve the current paused session.
 
 ---
 
-#### 2. Get Active Session
+#### Get Active Session
 
 **GET** `/sessions/active`
 
-Retrieve the current active session.
+Returns the current active session, or an error if none exists.
 
 **Response:**
 
@@ -68,8 +65,7 @@ Retrieve the current active session.
   "plannedDuration": 1500000,
   "status": "active",
   "startTime": "2025-12-17T21:30:23.163Z",
-  "pauses": [
-    {
+  "pauses": [{
       "start": "2025-12-17T21:43:30.746Z",
       "end": "2025-12-17T21:44:24.348Z",
       "_id": "string"
@@ -79,8 +75,7 @@ Retrieve the current active session.
       "end": "2025-12-17T21:53:08.917Z",
       "_id": "string"
     }
-  ],
-  "__v": 0
+  ]
 }
 ```
 
@@ -95,7 +90,7 @@ Retrieve the current active session.
 
 ---
 
-#### 3. Get Active or Paused Session
+#### Get Active or Paused Session
 
 **GET** `/sessions/active_or_paused`
 
@@ -116,9 +111,8 @@ Retrieve any active or paused sessions.
       "start": "2025-12-17T21:43:30.746Z",
       "end": "2025-12-17T21:44:24.348Z",
       "_id": "string"
-    },
-  ],
-  "__v": 0
+    }
+  ]
 }
 ```
 
@@ -133,7 +127,7 @@ Retrieve any active or paused sessions.
 
 ---
 
-#### 4. Get All Sessions
+#### Get All Sessions
 
 **GET** `/sessions`
 
@@ -147,20 +141,20 @@ Retrieve all past sessions.
     "sessions": [{
         "_id": "string",
         "projectId": "string",
+        "plannedDuration": 1500000,
         "status": "ended",
         "startTime": "2025-12-03T11:18:56.838Z",
         "pauses": [],
-        "__v": 0,
         "endTime": "2025-12-03T11:30:00.641Z",
         "duration": 663890
     },
     {
         "_id": "string",
         "projectId": "string",
+        "plannedDuration": 900000,
         "status": "ended",
         "startTime": "2025-12-03T11:40:59.446Z",
         "pauses": [],
-        "__v": 0,
         "endTime": "2025-12-03T11:41:05.403Z",
         "duration": 6032
     }]
@@ -171,7 +165,7 @@ Retrieve all past sessions.
 
 ### Manage Sessions
 
-#### 1. Start a Session
+#### Start a Session
 
 **POST** `/sessions/start`
 
@@ -196,8 +190,7 @@ Start a new pomodoro session.
     "status":"active",
     "_id":"string",
     "startTime":"2025-12-17T20:56:00.439Z",
-    "pauses":[],
-    "__v":0
+    "pauses":[]
 }
 ```
 
@@ -212,7 +205,7 @@ Start a new pomodoro session.
 
 ---
 
-#### 2. End a Session
+#### End a Session
 
 **POST** `/sessions/end`
 
@@ -238,8 +231,7 @@ Stop an active session.
   "status": "ended",
   "startTime": "2025-12-17T21:29:23.390Z",
   "endTime": "2025-12-17T21:30:08.362Z",
-  "pauses": [],
-  "__v": 0
+  "pauses": []
 }
 ```
 
@@ -254,7 +246,7 @@ Stop an active session.
 
 ---
 
-#### 3. Pause a Session
+#### Pause a Session
 
 **POST** `/sessions/pause`
 
@@ -283,9 +275,8 @@ Pause an active session.
       "start": "2025-12-17T21:43:30.746Z",
       "end": "2025-12-17T21:44:24.348Z",
       "_id": "string"
-    },
-  ],
-  "__v": 0
+    }
+  ]
 }
 ```
 
@@ -300,7 +291,7 @@ Pause an active session.
 
 ---
 
-#### 4. Resume a Session
+#### Resume a Session
 
 **POST** `/sessions/resume`
 
@@ -330,8 +321,7 @@ Resume a paused session.
       "end": "2025-12-18T18:07:25.200Z",
       "_id": "string"
     }
-  ],
-  "__v": 0
+  ]
 }
 ```
 
@@ -346,7 +336,7 @@ Resume a paused session.
 
 ---
 
-#### 4. Clear Session History
+#### Clear Session History
 
 **DELETE** `/sessions/delete/history`
 
@@ -374,7 +364,7 @@ Clear all session history for a specific project.
 
 ### Retrieve Projects
 
-#### 4. Get All Projects
+#### Get All Projects
 
 **GET** `/projects`
 
@@ -389,14 +379,12 @@ Retrieve all projects.
     {
       "_id": "string",
       "title": "Wash the dishes",
-      "date": "2025-12-08T20:32:23.170Z",
-      "__v": 0
+      "date": "2025-12-08T20:32:23.170Z"
     },
     {
       "_id": "string",
       "title": "Hello World",
-      "date": "2025-12-17T18:55:50.322Z",
-      "__v": 0
+      "date": "2025-12-17T18:55:50.322Z"
     }
   ]
 }
@@ -406,7 +394,7 @@ Retrieve all projects.
 
 ### Manage Projects
 
-#### 1. Add a Project
+#### Add a Project
 
 **POST** `/projects/add`
 
@@ -427,8 +415,7 @@ Add a new project (name must be unique).
   "success": true,
   "title": "Example Project Title",
   "_id": "string",
-  "date": "2025-12-18T18:24:26.617Z",
-  "__v": 0
+  "date": "2025-12-18T18:24:26.617Z"
 }
 ```
 
@@ -443,7 +430,7 @@ Add a new project (name must be unique).
 
 ---
 
-#### 2. Delete a Project
+#### Delete a Project
 
 **DELETE** `/projects/delete`
 
@@ -464,8 +451,7 @@ Deletes a project.
   "success": true,
   "_id": "string",
   "title": "Example Project Title",
-  "date": "2025-12-18T18:24:26.617Z",
-  "__v": 0
+  "date": "2025-12-18T18:24:26.617Z"
 }
 ```
 

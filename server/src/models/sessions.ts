@@ -38,6 +38,8 @@ const sessionSchema = new mongoose.Schema({
         enum: ['active', 'ended', 'paused'],
         default: 'active'
     }
-});
+},
+{ versionKey: false }
+);
 
 export const Session = mongoose.model('Session', sessionSchema);

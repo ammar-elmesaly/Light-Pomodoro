@@ -127,7 +127,7 @@ export async function getPausedSession() {
 }
 
 export async function getActiveOrPausedSession() {
-  const res = await fetch('http://localhost:3000/api/sessions/active_or_paused');
+  const res = await fetch('http://localhost:3000/api/sessions/active-or-paused');
 
   if (!res.ok) {
     const data = await res.json();

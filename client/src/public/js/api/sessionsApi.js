@@ -7,7 +7,7 @@ export async function addSession(plannedDuration) {
 
   const projectId = projectIdRes.projectId;
 
-  const res = await fetch('http://localhost:3000/api/sessions/start', {
+  const res = await fetch(`${BACKEND_URL}/api/sessions/start`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export async function addSession(plannedDuration) {
 }
 
 export async function endSession(sessionId) {
-  const res = await fetch('http://localhost:3000/api/sessions/end', {
+  const res = await fetch(`${BACKEND_URL}/api/sessions/end`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export async function endSession(sessionId) {
 }
 
 export async function pauseSession(sessionId) {
-  const res = await fetch('http://localhost:3000/api/sessions/pause', {
+  const res = await fetch(`${BACKEND_URL}/api/sessions/pause`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export async function pauseSession(sessionId) {
 }
 
 export async function resumeSession(sessionId) {
-  const res = await fetch('http://localhost:3000/api/sessions/resume', {
+  const res = await fetch(`${BACKEND_URL}/api/sessions/resume`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ export async function resumeSession(sessionId) {
 }
 
 export async function getSessions() {
-  const res = await fetch('http://localhost:3000/api/sessions');
+  const res = await fetch(`${BACKEND_URL}/api/sessions`);
 
   if (!res.ok) {
     const data = await res.json();
@@ -102,7 +102,7 @@ export async function getSessions() {
 }
 
 export async function getActiveSession() {
-  const res = await fetch('http://localhost:3000/api/sessions/active');
+  const res = await fetch(`${BACKEND_URL}/api/sessions/active`);
 
   if (!res.ok) {
     const data = await res.json();
@@ -115,7 +115,7 @@ export async function getActiveSession() {
 }
 
 export async function getPausedSession() {
-  const res = await fetch('http://localhost:3000/api/sessions/paused');
+  const res = await fetch(`${BACKEND_URL}/api/sessions/paused`);
 
   if (!res.ok) {
     const data = await res.json();
@@ -127,7 +127,7 @@ export async function getPausedSession() {
 }
 
 export async function getActiveOrPausedSession() {
-  const res = await fetch('http://localhost:3000/api/sessions/active-or-paused');
+  const res = await fetch(`${BACKEND_URL}/api/sessions/active-or-paused`);
 
   if (!res.ok) {
     const data = await res.json();
@@ -149,7 +149,7 @@ export async function updateSessions() {
 }
 
 export async function deleteSessionHistory(projectId) {
-  const res = await fetch('http://localhost:3000/api/sessions/delete/history', {
+  const res = await fetch(`${BACKEND_URL}/api/sessions/delete/history`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'

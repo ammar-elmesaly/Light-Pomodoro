@@ -1,5 +1,5 @@
 export async function addProject(projectTitle) {
-  const res = await fetch('http://localhost:3000/api/projects/add', {
+  const res = await fetch(`${BACKEND_URL}/api/projects/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -19,7 +19,7 @@ export async function addProject(projectTitle) {
 }
 
 export async function getProjects() {
-  const res = await fetch('http://localhost:3000/api/projects');
+  const res = await fetch(`${BACKEND_URL}/api/projects`);
 
   if (!res.ok) {
     const data = await res.json();
@@ -31,7 +31,7 @@ export async function getProjects() {
 }
 
 export async function deleteProject(projectId) {
-  const res = await fetch('http://localhost:3000/api/projects/delete', {
+  const res = await fetch(`${BACKEND_URL}/api/projects/delete`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'

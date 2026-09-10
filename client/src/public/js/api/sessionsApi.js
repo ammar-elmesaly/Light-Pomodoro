@@ -1,5 +1,6 @@
 import { getSelectedProjectId } from "../logic/mainLogic.js";
 import { SESSIONS } from "../state/sessionState.js";
+import { BACKEND_URL } from './config.js';
 
 export async function addSession(plannedDuration) {
   const projectIdRes = getSelectedProjectId();

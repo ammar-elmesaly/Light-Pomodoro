@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './config.js';
+
 export async function addProject(projectTitle) {
   const res = await fetch(`${BACKEND_URL}/api/projects/add`, {
     method: 'POST',

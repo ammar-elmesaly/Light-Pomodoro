@@ -2,8 +2,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 import app from './app';
 
-const PORT = process.env.PORT || 3000;
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
-app.listen(PORT, () => {
-    console.log(`Backend running port ${PORT}`);
-});
+export default app;

@@ -92,7 +92,7 @@ Returns the current active session, or an error if none exists.
 
 #### Get Active or Paused Session
 
-**GET** `/sessions/active_or_paused`
+**GET** `/sessions/active-or-paused`
 
 Retrieve any active or paused sessions.
 

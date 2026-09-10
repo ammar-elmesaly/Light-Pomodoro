@@ -22,8 +22,8 @@ router.get('/active', getActiveSession);
 // GET /api/sessions/paused
 router.get('/paused', getPausedSession);
 
-// GET /api/sessions/active_or_paused
-router.get('/active_or_paused', getActiveOrPausedSession);
+// GET /api/sessions/active-or-paused
+router.get('/active-or-paused', getActiveOrPausedSession);
 
 // POST /api/sessions/start
 router.post('/start', newSession);
